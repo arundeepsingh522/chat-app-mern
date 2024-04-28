@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 			unique: true,
-		},
+		}, 
 		password: {
 			type: String,
 			required: true,
@@ -23,7 +23,12 @@ const userSchema = new mongoose.Schema(
 		profilePic: {
 			type: String,
 			default: "",
-		},
+		},email: {
+            type: String,
+            required: true,
+            unique: true,
+            // Add email validation if needed
+        },
 		// createdAt, updatedAt => Member since <createdAt>
 	},
 	{ timestamps: true }

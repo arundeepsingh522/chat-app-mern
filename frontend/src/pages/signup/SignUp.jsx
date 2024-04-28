@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import GenderCheckbox from "./GenderCheckbox";
 import { useState } from "react";
 import useSignup from "../../hooks/useSignup";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
 	const [inputs, setInputs] = useState({
@@ -10,6 +11,8 @@ const SignUp = () => {
 		password: "",
 		confirmPassword: "",
 		gender: "",
+		email:""
+		
 	});
 
 	const { loading, signup } = useSignup();
@@ -26,7 +29,7 @@ const SignUp = () => {
 	return (
 		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
 			<div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
-				<h1 className='text-3xl font-semibold text-center text-gray-300'>
+				<h1 className='text-3xl font-semibold text-center text-white'>
 					Sign Up <span className='text-blue-500'> ChatApp</span>
 				</h1>
 
@@ -54,6 +57,18 @@ const SignUp = () => {
 							className='w-full input input-bordered h-10'
 							value={inputs.username}
 							onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+						/>
+					</div>
+					<div>
+						<label className='label p-2 '>
+							<span className='text-base label-text'>Email</span>
+						</label>
+						<input
+							type="text"
+							placeholder='Enter Email'
+							className='w-full input input-bordered h-10'
+							required="required"
+							onChange={(e) => setInputs({ ...inputs,email:e.target.value  })}
 						/>
 					</div>
 

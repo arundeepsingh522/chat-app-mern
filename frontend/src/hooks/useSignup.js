@@ -1,13 +1,14 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext";
-
+import { isValidEmail } from "../utils/utils.js";
 const useSignup = () => {
 	const [loading, setLoading] = useState(false);
 	const { setAuthUser } = useAuthContext();
 
-	const signup = async ({ fullName, username, password, confirmPassword, gender }) => {
-		const success = handleInputErrors({ fullName, username, password, confirmPassword, gender });
+	const signup = async ({ fullName, username, password, confirmPassword, gender,email }) => {
+		const success = handleInputErrors({ fullName, username, password, confirmPassword, gender,email});
+		
 		if (!success) return;
 
 		setLoading(true);
@@ -15,7 +16,7 @@ const useSignup = () => {
 			const res = await fetch("/api/auth/signup", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ fullName, username, password, confirmPassword, gender }),
+				body: JSON.stringify({ fullName, username, password, confirmPassword, gender,email }),
 			});
 
 			const data = await res.json();
@@ -35,11 +36,20 @@ const useSignup = () => {
 };
 export default useSignup;
 
-function handleInputErrors({ fullName, username, password, confirmPassword, gender }) {
+function handleInputErrors({ fullName, username, password, confirmPassword, gender ,email}) {
+
+	console.log('email in handle errors',email);
 	if (!fullName || !username || !password || !confirmPassword || !gender) {
 		toast.error("Please fill in all fields");
 		return false;
 	}
+
+	if(!isValidEmail(email)){
+		toast.error("Please enter a valid email address");
+        return false;
+
+	}
+	
 
 	if (password !== confirmPassword) {
 		toast.error("Passwords do not match");

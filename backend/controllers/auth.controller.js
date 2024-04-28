@@ -1,9 +1,13 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
+
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 export const signup = async (req, res) => {
   try{
-    const { fullName, username, password, confirmPassword, gender } = req.body;
+    console.log("console log",req.body);
+    const { fullName, username, password, confirmPassword, gender,email } = req.body;
+    
+    console.log('mail',email,'name',fullName);
     if(password !== confirmPassword) {
       return res.status(400).json({ error: "Passwords don't match" });
     }
@@ -11,6 +15,11 @@ export const signup = async (req, res) => {
     if (user) {
       return res.status(400).json({ error: "Username already exists" });
     }
+    const emailExits = await User.findOne({email});
+    if(emailExits)
+    {
+      return res.status(400).json({ error: "Email already exists" });             
+    } 
 
     // HASH PASSWORD HERE
     const salt = await bcrypt.genSalt(10);
@@ -20,6 +29,7 @@ export const signup = async (req, res) => {
 
     const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
     const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+    
 
     const newUser = new User({
       fullName,
@@ -27,6 +37,7 @@ export const signup = async (req, res) => {
       password: hashedPassword,
       gender,
       profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
+      email
     });
 
     if (newUser) {
@@ -39,6 +50,7 @@ export const signup = async (req, res) => {
         fullName: newUser.fullName,
         username: newUser.username,
         profilePic: newUser.profilePic,
+        email:newUser.email
       });
     } else {
       res.status(400).json({ error: "Invalid user data" });
@@ -50,15 +62,18 @@ export const signup = async (req, res) => {
 };
 export const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    console.log('login body',req.body);
+    const { email, password } = req.body;
+    console.log('email getting',email);
+    const user = await User.findOne({ email});
     const isPasswordCorrect = await bcrypt.compare(
       password,
       user?.password || ""
     );
+    console.log('user:',user);
 
     if (!user || !isPasswordCorrect) {
-      return res.status(400).json({ error: "Invalid username or password" });
+      return res.status(400).json({ error: "Invalid email or password" });
     }
     generateTokenAndSetCookie(user._id, res);
 
