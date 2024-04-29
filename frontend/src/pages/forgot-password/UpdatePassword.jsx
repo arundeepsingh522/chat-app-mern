@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import userSearchEmail from "../../hooks/userSearchEmail";
+import usePasswordUpdate from "../../hooks/useUpdatePassword";
 
 const UpdatePassword = () => { // Corrected component name
   const [password, setPassword] = useState(""); // State for password
   
-  const { loading, updatePassword } = userSearchEmail(); // Renamed function and destructured values correctly
+  const { loading, updatePassword } = usePasswordUpdate(); // Renamed function and destructured values correctly
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -119,3 +119,28 @@ export const searchEmail = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+export const updateUserData = async (req, res) => {
+  try {
+    console.log("update user data body", req.body);
+    const { searchEmail,password} = req.body;
+    console.log("passord in update", password);
+
+    
+    const user = await User.findOne({ searchEmail });
+    console.log("user:", user);
+    if(!user)
+    {
+      //user not found
+      return res.status(404).json({ error: "User not found" });
+    }
+    user.password = password;
+    await user.save();
+    console.log('password update');
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.log("Error in login controller", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

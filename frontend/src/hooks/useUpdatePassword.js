@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import { showCustomizedAlert } from "../utils/utils";
 
+
 const usePasswordUpdate = () => { // Renamed to usePasswordUpdate
+
   const [loading, setLoading] = useState(false);
 
   const updatePassword = async (password) => { // Renamed to updatePassword
@@ -10,10 +12,11 @@ const usePasswordUpdate = () => { // Renamed to usePasswordUpdate
     if (!success) return;
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/searchEmail", {
+        const searchEmail = localStorage.getItem('seacrhEmail');
+      const res = await fetch("/api/auth/updateUserData", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ searchEmail,password }),
       });
 
       const data = await res.json();
