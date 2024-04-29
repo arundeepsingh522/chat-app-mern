@@ -2,6 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext";
 
+import { isValidEmail,showCustomizedAlert } from "../utils/utils";
+
 const useLogin = () => {
 	const [loading, setLoading] = useState(false);
 	const { setAuthUser } = useAuthContext();
@@ -25,7 +27,8 @@ const useLogin = () => {
 			localStorage.setItem("chat-user", JSON.stringify(data));
 			setAuthUser(data);
 		} catch (error) {
-			toast.error(error.message);
+			
+			showCustomizedAlert(error.message);
 		} finally {
 			setLoading(false);
 		}
@@ -36,9 +39,18 @@ const useLogin = () => {
 export default useLogin;
 
 function handleInputErrors(email, password) {
-	if (!email || !password) {
-		toast.error("Please fill in all fields");
+	if(!email)
+	{
+		showCustomizedAlert("Email is Required");
+        return false;
+	}else if(!isValidEmail(email))
+	{
+		showCustomizedAlert("Please enter a valid email address");
 		return false;
+	}
+	else if(!password){
+		showCustomizedAlert("Password is Required");
+        return false;
 	}
 
 	return true;

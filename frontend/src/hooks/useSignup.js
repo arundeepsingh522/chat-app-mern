@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext";
-import { isValidEmail } from "../utils/utils.js";
+import { isValidEmail,isValidPassword,showCustomizedAlert } from "../utils/utils.js";
 const useSignup = () => {
 	const [loading, setLoading] = useState(false);
 	const { setAuthUser } = useAuthContext();
@@ -39,25 +39,44 @@ export default useSignup;
 function handleInputErrors({ fullName, username, password, confirmPassword, gender ,email}) {
 
 	console.log('email in handle errors',email);
-	if (!fullName || !username || !password || !confirmPassword || !gender) {
-		toast.error("Please fill in all fields");
+	if (!fullName) {
+		showCustomizedAlert("Full Name is Required");
+		//toast.error("Please fill in all fields");
 		return false;
-	}
-
-	if(!isValidEmail(email)){
-		toast.error("Please enter a valid email address");
+	}else if(fullName.length<6)
+	{
+		showCustomizedAlert("Full Name must be at least 6 characters");
         return false;
-
-	}
-	
-
-	if (password !== confirmPassword) {
-		toast.error("Passwords do not match");
+	}else if(!username)
+	{
+		showCustomizedAlert("Username is Required");
+        return false;
+	}else if(username.length<6)
+	{
+		showCustomizedAlert("Username must be at least 6 characters");
+		return false;
+	}else if(!email)
+	{
+		showCustomizedAlert("Email is Required");
+        return false;
+	}else if(!isValidEmail(email))
+	{
+		showCustomizedAlert("Please enter a valid email address");
 		return false;
 	}
-
-	if (password.length < 6) {
-		toast.error("Password must be at least 6 characters");
+	else if(!password){
+		showCustomizedAlert("Password is Required");
+        return false;
+	}else if(!isValidPassword(password)){
+		showCustomizedAlert("Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be at least 8 characters long.");
+        return false;
+	}else if (password!==confirmPassword)
+	{
+		showCustomizedAlert("Password and Confirm Password do not match");
+        return false;
+	}else if(!gender)
+	{
+		showCustomizedAlert("Please select a gender");
 		return false;
 	}
 

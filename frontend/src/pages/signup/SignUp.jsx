@@ -67,7 +67,6 @@ const SignUp = () => {
 							type="text"
 							placeholder='Enter Email'
 							className='w-full input input-bordered h-10'
-							required="required"
 							onChange={(e) => setInputs({ ...inputs,email:e.target.value  })}
 						/>
 					</div>

@@ -1,0 +1,36 @@
+custom-swal-size .swal2-popup {
+    width: 20px !important;
+    color: white; /* Adjust width as needed */
+  }
+  .swal-txt {
+    color: white;
+    width: min-content;
+  }
+  
+  .custom-swal-confirm {
+    font-size: 20px; /* Adjust font size as needed */
+    margin-bottom: 15px;
+    width: 200px; /* Adjust padding as needed */
+    margin-top: 5px;
+    background: #fc8019
+  }
+  .icon-swal {
+    padding: 0px;
+    margin-top: 15px;
+  }
+  .title-swal {
+  }
+  .text-swal {
+  }
+  
+  #get-start-text{
+    color: rgb(11, 69, 92);
+    text-align: center;
+    margin-top: 20px;
+  }
+  #get-start-text:hover{
+    color: white;
+  }
+
+  
+  
