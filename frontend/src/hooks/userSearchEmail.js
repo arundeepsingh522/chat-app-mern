@@ -21,18 +21,18 @@ const useSearchEmail = () => {
       });
 
       const data = await res.json();
-
       console.log("email search", data);
       if (data.error) {
+        console.log('inside data error');
         throw new Error(data.error);
       } else {
         console.log('inside response eamil search');
-        localStorage.setItem("searchEmail", email);
-        navigate("/update-password");
+        return data;
         
       }
     } catch (error) {
       showCustomizedAlert(error.message);
+      return null;
     } finally {
       setLoading(false);
     }

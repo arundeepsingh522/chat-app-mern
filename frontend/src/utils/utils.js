@@ -1,5 +1,4 @@
 import Swal from 'sweetalert2'
-
 export function isValidEmail(email) {
     const emailRegex = /^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     return emailRegex.test(email);
@@ -29,4 +28,20 @@ export function isValidEmail(email) {
           }
     });
   }
+
+  
+   export function showToast(message) {
+    var toast = document.getElementById("toastMessage");
+    toast.innerText = message; // Set the message text
+    toast.style.display = "block";
+
+    return new Promise(resolve => {
+      setTimeout(function(){
+          toast.style.display = "none";
+          resolve(); // Resolve the promise after hiding the toast
+      }, 2500); // Hide the toast after 3 seconds
+  });// Hide the toast after 3 seconds
+}
+
+
 

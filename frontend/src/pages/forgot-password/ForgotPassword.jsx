@@ -1,16 +1,30 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import userSearchEmail from "../../hooks/userSearchEmail";
+import { showToast } from "../../utils/utils";
+import { useNavigate } from "react-router-dom";
 
-const ForgotPassword = () => { // Corrected component name
+const ForgotPassword = () => {
+  const navigate = useNavigate();
+   // Corrected component name
   const [email, setEmail] = useState("");
-  
-
   const { loading, searchEmail  } = userSearchEmail();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await searchEmail(email);
+    const response =await searchEmail(email);
+    console.log('response of email search',response);
+    if(response.message)
+      {
+        console.log('inside response.message');
+        localStorage.setItem("searchEmail", email);
+        showToast("User Found !").then(()=>{
+          navigate("/update-password");
+        })
+       
+      }
+   
+  //  console.log('response of email search',response);
   };
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -18,7 +32,7 @@ const ForgotPassword = () => { // Corrected component name
         <h1 className="text-3xl font-semibold text-center text-white">
           <span className="text-blue-500"> ChatApp</span>
         </h1>
-        <h3 className="mx auto mt-2 text-white">
+        <h3 className="mx auto mt-4 text-white">
           Please enter your Email address to search for your account.</h3>
         <form onSubmit={handleSubmit}>
           <div>
@@ -51,6 +65,7 @@ const ForgotPassword = () => { // Corrected component name
           </div>
         </form>
       </div>
+      <div id="toastMessage" className="toastMessage"></div>
     </div>
   );
 };

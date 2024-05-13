@@ -74,6 +74,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ error: "Invalid email or password" });
     }
     generateTokenAndSetCookie(user._id, res);
+    console.log('succes login');
 
     res.status(200).json({
       _id: user._id,
@@ -85,6 +86,8 @@ export const login = async (req, res) => {
     console.log("Error in login controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
+
+  
 };
 export const logout = (req, res) => {
   try {
@@ -126,8 +129,6 @@ export const updateUserData = async (req, res) => {
     console.log("update user data body", req.body);
     const { searchEmail,password} = req.body;
     console.log("passord in update", password);
-
-    
     const user = await User.findOne({ searchEmail });
     console.log("user:", user);
     if(!user)
@@ -135,7 +136,10 @@ export const updateUserData = async (req, res) => {
       //user not found
       return res.status(404).json({ error: "User not found" });
     }
-    user.password = password;
+    // HASH PASSWORD HERE
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    user.password = hashedPassword;
     await user.save();
     console.log('password update');
     return res.status(200).json({ message: "Password updated successfully" });

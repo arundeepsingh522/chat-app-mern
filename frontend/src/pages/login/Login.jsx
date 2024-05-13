@@ -5,7 +5,6 @@ import useLogin from "../../hooks/useLogin";
 const Login = () => {
   const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const { loading, login } = useLogin();
 
   const handleSubmit = async (e) => {
@@ -46,38 +45,31 @@ const Login = () => {
             />
           </div>
           <div>
-          <Link to="/forgot-password" 
-          className="text-sm hover:underline hover:text-white mt-2 inline-block">
+            <Link
+              to="/forgot-password"
+              className="text-sm hover:underline hover:text-white mt-2 inline-block"
+            >
               Forgot Password
             </Link>
           </div>
-          
-
           <div>
             <button className="btn btn-block btn-sm mt-2" disabled={loading}>
-              {loading ? (  
+              {loading ? (
                 <span className="loading loading-spinner "></span>
               ) : (
                 "Login"
               )}
             </button>
-
           </div>
-          
-
-          <div style={{textAlign:'center'}}>
-            Don't have an account?<> </>   
-          <Link 
-            to="/signup"
-            className=" text-sm  hover:underline hover:text-white mt-2 inline-block"
-          >
-             Register
-          </Link>
-
+          <div style={{ textAlign: "center" }}>
+            Don't have an account?<> </>
+            <Link
+              to="/signup"
+              className=" text-sm  hover:underline hover:text-white mt-2 inline-block"
+            >
+              Register
+            </Link>
           </div>
-         
-          
-          
         </form>
       </div>
     </div>
