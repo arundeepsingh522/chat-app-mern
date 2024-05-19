@@ -43,5 +43,49 @@ export function isValidEmail(email) {
   });// Hide the toast after 3 seconds
 }
 
+export function compressImage(inputFile, quality, callback) {
+  var reader = new FileReader();
+  reader.onload = function(event) {
+      var img = new Image();
+      img.onload = function() {
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d');
+          var maxWidth = 800; // Set a maximum width for the compressed image
+          var maxHeight = 600; // Set a maximum height for the compressed image
+          var width = img.width;
+          var height = img.height;
+
+          if (width > height) {
+              if (width > maxWidth) {
+                  height *= maxWidth / width;
+                  width = maxWidth;
+              }
+          } else {
+              if (height > maxHeight) {
+                  width *= maxHeight / height;
+                  height = maxHeight;
+              }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+
+          var currentDate = new Date();
+          var dateString = currentDate.toISOString().split('T')[0]; // Get current date as YYYY-MM-DD
+          var timeString = currentDate.toTimeString().split(' ')[0].replace(/:/g, ''); // Get current time as HHMMSS
+          var outputFileName = 'compressed_' + dateString + '_' + timeString + '.jpg'; // Generate filename with current date and time
+
+          canvas.toBlob(function(blob) {
+              var compressedFile = new File([blob], outputFileName, { type: 'image/jpeg', lastModified: Date.now() });
+              callback(compressedFile);
+          }, 'image/jpeg', quality / 100);
+      };
+      img.src = event.target.result;
+  };
+  reader.readAsDataURL(inputFile);
+}
+
+
 
 

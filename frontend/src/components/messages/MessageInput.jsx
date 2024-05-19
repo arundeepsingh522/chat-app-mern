@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BsSend } from "react-icons/bs";
+import { BsFilePlus } from 'react-icons/bs';
 import useSendMessage from "../../hooks/useSendMessage";
 const MessageInput = () => {
 	const [message, setMessage] = useState("");
@@ -22,7 +23,7 @@ const MessageInput = () => {
 					value={message}
 					onChange={(e) => setMessage(e.target.value)}
 				/>
-				<button type='submit' className='absolute inset-y-0 end-0 flex items-center pe-3'>
+				<button type='submit' className='text-white absolute inset-y-0 end-0 flex items-center pe-3'>
 					{loading ? <div className='loading loading-spinner'></div> : <BsSend />}
 				</button>
 			</div>
