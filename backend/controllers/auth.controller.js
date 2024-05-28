@@ -1,12 +1,11 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
-
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 export const signup = async (req, res) => {
   try {
     console.log("console log", req.body);
     const { fullName, username, password, confirmPassword, gender, email } =
-      req.body;
+    req.body;
     console.log("mail", email, "name", fullName);
     if (password !== confirmPassword) {
       return res.status(400).json({ error: "Passwords don't match" });
@@ -123,7 +122,7 @@ export const updateUserData = async (req, res) => {
     console.log("update user data body", req.body);
     const { searchEmail, password } = req.body;
     console.log("passord in update", password);
-    const user = await User.findOne({ searchEmail });
+    const user = await User.findOne({ email:searchEmail });
     console.log("user:", user);
     if (!user) {
       //user not found
@@ -142,27 +141,34 @@ export const updateUserData = async (req, res) => {
   }
 };
 
-export const updateProfilePic =async (req, res) => {
+export const updateProfilePic = async (req, res) => {
   try {
+    const { username, updatedProfilePic } = req.body;
+    console.log('username',username);
+    console.log('updatedProfilePic',updatedProfilePic);
 
-    
-    const { userEmail,updatedProfilePic} = req.body;
-    console.log('req body',req.body)
-    console.log('user email =',userEmail);
-    const user = await User.findOne({ email:userEmail });
-    console.log("user found: ", user);
-
-    user.profilePic=updateProfilePic;
-    await user.save();
-    console.log("profile pic updated");
-    return res.status(200).json({ message: "Password updated successfully" });
-    if (!user) {
-      //user not found
-      return res.status(404).json({ error: "User not found" });
+    // Input Validation
+    if (!username || !updatedProfilePic) {
+      return res.status(400).json({ error: "Username and updatedProfilePic are required." });
     }
 
+    const user = await User.findOne({ username });
+
+    console.log('user fetched during in updateProfilePic controller');
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    user.profilePic = updatedProfilePic;
+    await user.save();
+
+    console.log("Profile pic is updated");
+    return res.status(200).json({ message: "Profile picture updated successfully" });
+
   } catch (error) {
-    console.log("Error in updateProfile controller", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error in updateProfile controller:", error.message);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };

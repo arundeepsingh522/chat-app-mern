@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import usePasswordUpdate from "../../hooks/useUpdatePassword";
 import { showToast } from "../../utils/utils";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const UpdatePassword = () => {
+  const location = useLocation();
+  const {email}=location.state||{};
+  console.log('prop values',email);
+  console.log('location state',location.state);
   const navigate = useNavigate();
   // Corrected component name
   const [password, setPassword] = useState(""); // State for password
@@ -14,7 +19,7 @@ const UpdatePassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const response = await updatePassword(password); // Call the updatePassword function with the password
+    const response = await updatePassword(password,email); // Call the updatePassword function with the password
     if (response) {
       if(response.message)
         {

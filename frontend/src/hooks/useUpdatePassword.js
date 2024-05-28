@@ -8,7 +8,7 @@ const usePasswordUpdate = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const updatePassword = async (password) => {
+  const updatePassword = async (password,email) => {
     // Renamed to updatePassword
     const success = handleInputErrors(password);
     if (!success) {
@@ -17,7 +17,8 @@ const usePasswordUpdate = () => {
     };
     setLoading(true);
     try {
-      const searchEmail = localStorage.getItem("seacrhEmail");
+      const searchEmail =email;
+      console.log('search email',searchEmail);
       const res = await fetch("/api/auth/updateUserData", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -32,7 +32,6 @@ const SignUp = () => {
 				<h1 className='text-3xl font-semibold text-center text-white'>
 					Sign Up <span className='text-blue-500'> ChatApp</span>
 				</h1>
-
 				<form onSubmit={handleSubmit}>
 					<div>
 						<label className='label p-2'>

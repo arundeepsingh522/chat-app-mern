@@ -11,14 +11,12 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     z-index: 9999;
   }
-
   .container-home{
 display: flex;
 flex-direction: column;
 justify-content: center; 
 align-items: center;
   }
-
   .user-id{
     display: flex;
     justify-content: space-between;

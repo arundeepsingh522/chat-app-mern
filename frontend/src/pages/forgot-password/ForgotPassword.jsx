@@ -4,6 +4,7 @@ import userSearchEmail from "../../hooks/userSearchEmail";
 import { showToast } from "../../utils/utils";
 import { useNavigate } from "react-router-dom";
 
+
 const ForgotPassword = () => {
   const navigate = useNavigate();
    // Corrected component name
@@ -17,9 +18,11 @@ const ForgotPassword = () => {
     if(response.message)
       {
         console.log('inside response.message');
-        localStorage.setItem("searchEmail", email);
+        const data= email;
+       // localStorage.setItem("searchEmail", data);
+        const propsToSend = { email: data };
         showToast("User Found !").then(()=>{
-          navigate("/update-password");
+          navigate("/update-password",{state:propsToSend});
         })
        
       }
