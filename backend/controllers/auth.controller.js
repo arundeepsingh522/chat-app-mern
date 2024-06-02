@@ -10,14 +10,15 @@ export const signup = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({ error: "Passwords don't match" });
     }
-    const user = await User.findOne({ username });
-    if (user) {
-      return res.status(400).json({ error: "Username already exists" });
-    }
     const emailExits = await User.findOne({ email });
     if (emailExits) {
       return res.status(400).json({ error: "Email already exists" });
     }
+    const user = await User.findOne({ username });
+    if (user) {
+      return res.status(400).json({ error: "Username already exists" });
+    }
+   
 
     // HASH PASSWORD HERE
     const salt = await bcrypt.genSalt(10);
@@ -25,7 +26,7 @@ export const signup = async (req, res) => {
 
     // https://avatar-placeholder.iran.liara.run/
 
-    const boyProfilePic = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-1024.png`;
+    const boyProfilePic = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-512.png`;
     const girlProfilePic = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/female1-1024.png`;
 
     const newUser = new User({
@@ -37,10 +38,13 @@ export const signup = async (req, res) => {
       email,
     });
 
-    if (newUser) {
+    
       // Generate JWT token here
-      generateTokenAndSetCookie(newUser._id, res);
       await newUser.save();
+      const token =generateTokenAndSetCookie(newUser._id, res);
+
+      console.log('token generated',token);
+      
 
       res.status(201).json({
         _id: newUser._id,
@@ -48,10 +52,10 @@ export const signup = async (req, res) => {
         username: newUser.username,
         profilePic: newUser.profilePic,
         email: newUser.email,
+        token,
+
       });
-    } else {
-      res.status(400).json({ error: "Invalid user data" });
-    }
+    
   } catch (error) {
     console.log("Error in signup controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });

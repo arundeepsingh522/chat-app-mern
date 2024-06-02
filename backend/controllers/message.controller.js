@@ -4,7 +4,10 @@ import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
   try {
-    const { message } = req.body;
+    console.log('req body',req.body);
+    const{ message,type,src}=req.body;
+    
+   
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
     let conversation = await Conversation.findOne({
@@ -19,6 +22,8 @@ export const sendMessage = async (req, res) => {
       senderId,
       receiverId,
       message,
+      type,
+      src,
     });
     if (newMessage) {
       conversation.messages.push(newMessage._id);
@@ -33,13 +38,13 @@ export const sendMessage = async (req, res) => {
       // io.to(<socket_id>).emit() used to send events to specific client
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
+    console.log('inside send message controller',newMessage);
     res.status(201).json(newMessage);
   } catch (error) {
     console.log("Error in sendMessage controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 export const getMessages = async (req, res) => {
   try {
     const { id: userToChatId } = req.params;
@@ -53,6 +58,7 @@ export const getMessages = async (req, res) => {
 
     const messages = conversation.messages;
 
+    console.log('inside get Messages Controller',messages);
     res.status(200).json(messages);
   } catch (error) {
     console.log("Error in getMessages controller: ", error.message);

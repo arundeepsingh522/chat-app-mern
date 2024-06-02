@@ -40,3 +40,19 @@ align-items: center;
   {
     display: none;
   }
+
+  .plus{
+    color: white;
+    width: 30px;
+    height: 30px;
+  }
+
+  .user-id h2{
+    color: darkslateblue;
+    font-weight: 700;
+    background-color: #fff;
+    
+    padding: 10px;
+    border-radius: 10px;
+   
+  }

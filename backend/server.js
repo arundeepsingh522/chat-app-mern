@@ -38,7 +38,7 @@ const storage = multer.diskStorage({
   },
 });
 function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/;
+  const filetypes = /jpeg|jpg|png|gif|mp4|avi|mov/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
   if (mimetype && extname) {
@@ -47,9 +47,10 @@ function checkFileType(file, cb) {
     cb("Error: Images Only!");
   }
 }
+//10 mb max file size
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 1000000 },
+  limits: { fileSize: 10000000 },
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
   },

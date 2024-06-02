@@ -20,11 +20,15 @@ const useSignup = () => {
 			});
 
 			const data = await res.json();
+			console.log('response in sign up',data);
 			if (data.error) {
 				throw new Error(data.error);
 			}
+			document.cookie = `jwt=${data.token}; max-age=${15 * 24 * 60 * 60}; path=/`;
+			console.log('cookie saved');
 			localStorage.setItem("chat-user", JSON.stringify(data));
 			setAuthUser(data);
+			
 		} catch (error) {
 			toast.error(error.message);
 		} finally {

@@ -8,7 +8,6 @@ router.post("/searchEmail",searchEmail)
 router.post("/updateUserData",updateUserData);
 router.post("/updateProfilePic",updateProfilePic);
 
-
 /*
 // Define multer storage configuration
 const storage = multer.diskStorage({
