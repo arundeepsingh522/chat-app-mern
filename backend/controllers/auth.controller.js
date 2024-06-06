@@ -45,7 +45,6 @@ export const signup = async (req, res) => {
 
       console.log('token generated',token);
       
-
       res.status(201).json({
         _id: newUser._id,
         fullName: newUser.fullName,

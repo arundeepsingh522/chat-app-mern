@@ -9,22 +9,20 @@ import connectToMongoDB from "./db/connectToMongoDB.js";
 import { app, server } from "./socket/socket.js";
 import fs from "fs";
 import multer from "multer";
-import cors from 'cors'
-app.use(cors())
-
+import cors from "cors";
+app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 dotenv.config();
 
 const uploadsDir = path.join("uploads");
-console.log("==>>>>",uploadsDir)
+console.log("==>>>>", uploadsDir);
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
-  console.log("==>>>>",uploadsDir)
+  console.log("==>>>>", uploadsDir);
 }
-
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -58,9 +56,9 @@ const upload = multer({
 
 app.post("/upload", upload.single("myFile"), (req, res) => {
   try {
-    console.log("cominggggggg")
-    const filePath = `http://localhost:5000/uploads/${req.file.filename}`
-    console.log("==>>>>",filePath)
+    console.log("cominggggggg");
+    const filePath = `http://localhost:5000/uploads/${req.file.filename}`;
+    console.log("==>>>>", filePath);
     res.status(200).json({
       message: "File uploaded successfully ok",
       filePath: filePath,
@@ -86,15 +84,12 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 // CORS middleware
 app.use((req, res, next) => {
-  
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
 app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
-
-
 
 // Use the image routes
 
