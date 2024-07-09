@@ -36,5 +36,7 @@ npm run build
 ### Start the app
 
 ```shell
-npm start
+npm start (backend)
+cd frontend (frontend)
+npm run dev 
 ```
